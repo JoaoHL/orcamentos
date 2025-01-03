@@ -1,9 +1,6 @@
 from math import *
 import json
 
-### TODO: modificar orçamentos pra que comportem um conjunto de produtos, não só 1
-### TODO: adicionar links dos materiais na entidade Produto
-
 print("Olar!!!")
 
 produtos = dict()
@@ -40,6 +37,7 @@ def lista_produtos():
     print("==============================================")
     for codigo, produto in produtos.items():
         print("Código: ", codigo)
+        print("URL do produto (se houver): {url}".format(url=produto["url"]))
         print("Nome: ", produto["nome"])
         print("Quantidade: ", produto["qtd"])
         print("Preço: ", produto["preco"])
@@ -49,16 +47,16 @@ def lista_produtos():
 def cria_produto():
     codigo_produto = len(produtos)
     nome_produto = input("Digite o nome do produto: ")
+    url_produto = input("Digite a URL do produto, caso tenha: ")
     qtd_produto = float(input("Digite a quantidade do produto que vem por unidade comprada (ex.: m²/caixa de azulejo): ").replace(",", "."))
     preco_produto = float(input("Digite o preço do produto: ").replace(",", "."))
     
-    produto = {"nome": nome_produto,"qtd": qtd_produto, "preco": preco_produto}
+    produto = {"nome": nome_produto, "url": url_produto, "qtd": qtd_produto, "preco": preco_produto}
     produtos[codigo_produto] = produto
 
     print("Produto criado! Código de produto é", codigo_produto)
 
     salvar_produto(codigo_produto, produto)
-
 
 def modifica_produto():
     codigo_produto = int(input("Digite o código do produto a ser modificado: "))
@@ -67,12 +65,15 @@ def modifica_produto():
         return
 
     possible_name = input("Digite o novo nome do produto: ")
+    possible_url = input("Digite a nova URL do produto: ")
     possible_qtd = input("Digite a nova quantidade de produto: ")
     possible_preco = input("Digite o novo preço do produto: ")
 
     produto = produtos[codigo_produto]
     if len(possible_name) > 0:
         produto["nome"] = possible_name
+    if len(possible_url) > 0:
+        produto["url"] = possible_url
     if len(possible_qtd) > 0:
         produto["qtd"] = float(possible_qtd)
     if len(possible_preco) > 0:
